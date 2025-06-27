@@ -1,19 +1,32 @@
-import { useState } from 'react';
-import { Eye, Edit, Trash2, Download, QrCode } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useVehicles } from '@/hooks/useVehicles';
-import { Vehicle } from '@/types/vehicle';
-import { VehicleForm } from './VehicleForm';
-import { VehicleDetails } from './VehicleDetails';
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import VehiclePDF from './VehiclePDF';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { Eye, Edit, Trash2, Download, QrCode } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useVehicles } from "@/hooks/useVehicles";
+import { Vehicle } from "@/types/vehicle";
+import { VehicleForm } from "./VehicleForm";
+import { VehicleDetails } from "./VehicleDetails";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import VehiclePDF from "./VehiclePDF";
+import { useToast } from "@/hooks/use-toast";
 
 export const VehicleTable = () => {
-  const { vehicles, isLoading, deleteVehicle } = useVehicles();
+  const { vehicles, isLoading, deleteVehicle, error } = useVehicles();
   const { toast } = useToast();
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -29,8 +42,8 @@ export const VehicleTable = () => {
     const publicUrl = `${window.location.origin}/public/vehicle/${vehicle.id}`;
     navigator.clipboard.writeText(publicUrl);
     toast({
-      title: 'Public URL Copied',
-      description: 'The public URL has been copied to your clipboard.',
+      title: "Public URL Copied",
+      description: "The public URL has been copied to your clipboard.",
     });
   };
 
@@ -44,12 +57,16 @@ export const VehicleTable = () => {
     );
   }
 
+  if (error) {
+    return <p>{error.message}</p>
+  }
+
   return (
-    <Card className='py-1'>
+    <Card className="py-1">
       {/* <PDFViewer width="100%" height={600}>
         <VehiclePDF vehicle={vehicles[0]} />
       </PDFViewer> */}
-      <CardContent className='p-0'>
+      <CardContent className="p-0">
         {vehicles.length === 0 ? (
           <div className="text-center text-muted-foreground py-8">
             No vehicles found. Add your first vehicle record.
@@ -59,19 +76,21 @@ export const VehicleTable = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className='whitespace-nowrap'>VCC No</TableHead>
-                  <TableHead className='whitespace-nowrap'>Brand</TableHead>
-                  <TableHead className='whitespace-nowrap'>Model</TableHead>
-                  <TableHead className='whitespace-nowrap'>Year</TableHead>
-                  <TableHead className='whitespace-nowrap'>Color</TableHead>
-                  <TableHead className='whitespace-nowrap'>Owner</TableHead>
-                  <TableHead className='whitespace-nowrap'>Actions</TableHead>
+                  <TableHead className="whitespace-nowrap">VCC No</TableHead>
+                  <TableHead className="whitespace-nowrap">Brand</TableHead>
+                  <TableHead className="whitespace-nowrap">Model</TableHead>
+                  <TableHead className="whitespace-nowrap">Year</TableHead>
+                  <TableHead className="whitespace-nowrap">Color</TableHead>
+                  <TableHead className="whitespace-nowrap">Owner</TableHead>
+                  <TableHead className="whitespace-nowrap">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {vehicles.map((vehicle) => (
                   <TableRow key={vehicle.id}>
-                    <TableCell className="font-medium">{vehicle.vccNo}</TableCell>
+                    <TableCell className="font-medium">
+                      {vehicle.vccNo}
+                    </TableCell>
                     <TableCell>{vehicle.vehicleBrandName}</TableCell>
                     <TableCell>{vehicle.vehicleModel}</TableCell>
                     <TableCell>{vehicle.yearOfBuilt}</TableCell>
@@ -79,7 +98,10 @@ export const VehicleTable = () => {
                     <TableCell>{vehicle.ownerName}</TableCell>
                     <TableCell>
                       <div className="flex gap-2">
-                        <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+                        <Dialog
+                          open={isViewDialogOpen}
+                          onOpenChange={setIsViewDialogOpen}
+                        >
                           <DialogTrigger asChild>
                             <Button
                               variant="outline"
@@ -93,11 +115,16 @@ export const VehicleTable = () => {
                             <DialogHeader>
                               <DialogTitle>Vehicle Details</DialogTitle>
                             </DialogHeader>
-                            {selectedVehicle && <VehicleDetails vehicle={selectedVehicle} />}
+                            {selectedVehicle && (
+                              <VehicleDetails vehicle={selectedVehicle} />
+                            )}
                           </DialogContent>
                         </Dialog>
 
-                        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                        <Dialog
+                          open={isEditDialogOpen}
+                          onOpenChange={setIsEditDialogOpen}
+                        >
                           <DialogTrigger asChild>
                             <Button
                               variant="outline"
@@ -124,9 +151,13 @@ export const VehicleTable = () => {
                           fileName={`VCC_${vehicle.vccNo}.pdf`}
                         >
                           {({ loading }) => (
-                            <Button variant="outline" size="sm" disabled={loading}>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              disabled={loading}
+                            >
                               <Download className="h-4 w-4" />
-                              {loading ? 'Generating...' : ''}
+                              {loading ? "Generating..." : ""}
                             </Button>
                           )}
                         </PDFDownloadLink>
