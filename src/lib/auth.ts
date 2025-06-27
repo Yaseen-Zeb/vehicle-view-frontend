@@ -5,7 +5,7 @@ const API_URL = env.VITE_APP_BASE_URL
 // Mock authentication - replace with real API calls
 export const authService = {
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-    const response = await fetch(`${API_URL}/login`, {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
