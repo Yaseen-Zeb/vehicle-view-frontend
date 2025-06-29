@@ -24,9 +24,9 @@ export const VehicleDetails = ({ vehicle }: VehicleDetailsProps) => {
     { label: 'Year of Built', value: vehicle.yearOfBuilt },
     { label: 'Vehicle Drive', value: vehicle.vehicleDrive },
     { label: 'Country of Origin', value: vehicle.countryOfOrigin },
-    { label: 'Engine Capacity', value: vehicle.engineCapacity || 'N/A' },
-    { label: 'Carriage Capacity', value: vehicle.carriageCapacity || 'N/A' },
-    { label: 'Passenger Capacity', value: vehicle.passengerCapacity || 'N/A' },
+    { label: 'Engine Capacity', value: vehicle.engineCapacity || '' },
+    { label: 'Carriage Capacity', value: vehicle.carriageCapacity || '' },
+    { label: 'Passenger Capacity', value: vehicle.passengerCapacity || '' },
     { label: 'Vehicle Model', value: vehicle.vehicleModel },
     { label: 'Vehicle Brand Name', value: vehicle.vehicleBrandName },
     { label: 'Vehicle Type', value: vehicle.vehicleType },
@@ -36,7 +36,7 @@ export const VehicleDetails = ({ vehicle }: VehicleDetailsProps) => {
     { label: 'Declaration Date', value: formatDateDMY(vehicle.declarationDate) },
     { label: 'Owner Code', value: vehicle.ownerCode },
     { label: 'Owner Name', value: vehicle.ownerName },
-    { label: 'Print Remarks', value: vehicle.printRemarks || 'N/A' },
+    { label: 'Print Remarks', value: vehicle.printRemarks || '' },
   ];
 
   return (

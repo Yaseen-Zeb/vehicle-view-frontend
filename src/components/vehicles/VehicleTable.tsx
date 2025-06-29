@@ -63,9 +63,9 @@ export const VehicleTable = () => {
 
   return (
     <Card className="py-1">
-      <PDFViewer width="100%" height={600}>
+      {/* <PDFViewer width="100%" height={600}>
         <VehiclePDF vehicle={vehicles[0]} />
-      </PDFViewer>
+      </PDFViewer> */}
       <CardContent className="p-0">
         {vehicles.length === 0 ? (
           <div className="text-center text-muted-foreground py-8">

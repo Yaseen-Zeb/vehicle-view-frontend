@@ -10,6 +10,17 @@ import {
 import { Vehicle } from '@/types/vehicle';
 import QRCode from 'qrcode';
 
+function spellDigits(number: string) {
+  if (!number) {
+    return '';
+  }
+  const digitWords = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE"];
+  return String(number)
+    .split('')
+    .map(char => digitWords[parseInt(char)])
+    .join(' ');
+}
+
 export const generateQRCodeDataUrl = async (vehicleId: number): Promise<string> => {
   const url = `${window.location.origin}/public/vehicle/${vehicleId}`;
   return await QRCode.toDataURL(url, {
@@ -87,11 +98,11 @@ const VehiclePDF: React.FC<VehiclePDFProps> = ({ vehicle }) => {
 
 
           {/* Vehicle Type */}
-          <Text style={{ ...styles.text, right: 147, top: 137, width: 194, textAlign: 'left' }}>{vehicle.vehicleType}</Text>
+          <Text style={{ ...styles.text, right: 147, top: 137, width: 194, textAlign: 'left' }}>{`${vehicle.vehicleBrandName} - ${vehicle.vehicleModel} (${vehicle.vehicleType})`}</Text>
 
 
           {/* Brand and Model */}
-          <Text style={{ ...styles.text, right: 100, top: 212, width: 240 }}>{`${vehicle.yearOfBuilt} - ${vehicle.vehicleModel}`}</Text>
+          <Text style={{ ...styles.text, right: 100, top: 212, width: 240 }}>{`${vehicle.yearOfBuilt} - ${spellDigits(vehicle.yearOfBuilt)}`}</Text>
 
 
           {/* Origin */}
