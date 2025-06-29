@@ -4,22 +4,23 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { Label } from '../ui/label';
 import { useVehicles } from '../../hooks/useVehicles';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CreateVehicleData, Vehicle } from '@/types/vehicle';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '../ui/form';
 
 const vehicleSchema = z.object({
-  make: z.string(),
-  model: z.string(),
-  year: z.number(),
-  vin: z.string(),
-  userId: z.number(),
   vccNo: z.string().min(1, 'VCC No is required'),
-  vccStatus: z.string().min(1, 'VCC Status is required'),
   vccGenerationDate: z.string().min(1, 'VCC Generation Date is required'),
   chassisNo: z.string().min(1, 'Chassis No is required'),
-  engineNumber: z.string().min(1, 'Engine Number is required'),
+  engineNumber: z.string().optional(),
   yearOfBuilt: z.string().min(1, 'Year of Built is required'),
   vehicleDrive: z.string().min(1, 'Vehicle Drive is required'),
   countryOfOrigin: z.string().min(1, 'Country of Origin is required'),
@@ -70,15 +71,36 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) 
     prevIsLoading.current = isLoading;
   }, [isLoading, error, onSuccess]);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<VehicleFormData>({
+  const form = useForm<VehicleFormData>({
     resolver: zodResolver(vehicleSchema),
     defaultValues: vehicle
       ? {
-          ...vehicle,
-          vccGenerationDate: toDateInputValue(vehicle.vccGenerationDate),
-          declarationDate: toDateInputValue(vehicle.declarationDate),
-        }
-      : undefined
+        ...vehicle,
+        vccGenerationDate: toDateInputValue(vehicle.vccGenerationDate),
+        declarationDate: toDateInputValue(vehicle.declarationDate),
+      }
+      : {
+        vccNo: '',
+        vccGenerationDate: '',
+        chassisNo: '',
+        engineNumber: '',
+        yearOfBuilt: '',
+        vehicleDrive: '',
+        countryOfOrigin: '',
+        engineCapacity: '',
+        carriageCapacity: '',
+        passengerCapacity: '',
+        vehicleModel: '',
+        vehicleBrandName: '',
+        vehicleType: '',
+        vehicleColor: '',
+        specificationStandardName: '',
+        declarationNumber: '',
+        declarationDate: '',
+        ownerCode: '',
+        ownerName: '',
+        printRemarks: ''
+      }
   });
 
   const onSubmit = (data: VehicleFormData) => {
@@ -96,143 +118,325 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) 
         <CardTitle>{isEditing ? 'Edit Vehicle' : 'Add New Vehicle'}</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="make">Make</Label>
-              <Input id="make" {...register('make')} />
-              {errors.make && <p className="text-red-500">{errors.make.message}</p>}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="vccNo"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      VCC No <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter VCC No" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="vccGenerationDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      VCC Generation Date <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="chassisNo"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Chassis No <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Chassis No" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="engineNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Engine Number</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Engine Number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="yearOfBuilt"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Year of Built <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Year of Built" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="vehicleDrive"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Vehicle Drive <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Vehicle Drive" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="countryOfOrigin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Country of Origin <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Country of Origin" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="engineCapacity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Engine Capacity</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Engine Capacity" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="carriageCapacity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Carriage Capacity</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Carriage Capacity" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="passengerCapacity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Passenger Capacity</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Passenger Capacity" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="vehicleModel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Vehicle Model <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Vehicle Model" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="vehicleBrandName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Vehicle Brand Name <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Vehicle Brand Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="vehicleType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Vehicle Type <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Vehicle Type" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="vehicleColor"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Vehicle Color <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Vehicle Color" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="specificationStandardName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Specification Standard Name <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Specification Standard Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="declarationNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Declaration Number <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Declaration Number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="declarationDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Declaration Date <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="ownerCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Owner Code <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Owner Code" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="ownerName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Owner Name <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Owner Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div>
-              <Label htmlFor="model">Model</Label>
-              <Input id="model" {...register('model')} />
-              {errors.model && <p className="text-red-500">{errors.model.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="year">Year</Label>
-              <Input id="year" type="number" {...register('year', { valueAsNumber: true })} />
-              {errors.year && <p className="text-red-500">{errors.year.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="vin">VIN</Label>
-              <Input id="vin" {...register('vin')} />
-              {errors.vin && <p className="text-red-500">{errors.vin.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="userId">User ID</Label>
-              <Input id="userId" type="number" {...register('userId', { valueAsNumber: true })} />
-              {errors.userId && <p className="text-red-500">{errors.userId.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="vccNo">VCC No</Label>
-              <Input id="vccNo" {...register('vccNo')} />
-              {errors.vccNo && <p className="text-red-500">{errors.vccNo.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="vccStatus">VCC Status</Label>
-              <Input id="vccStatus" {...register('vccStatus')} />
-              {errors.vccStatus && <p className="text-red-500">{errors.vccStatus.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="vccGenerationDate">VCC Generation Date</Label>
-              <Input id="vccGenerationDate" type="date" {...register('vccGenerationDate')} />
-              {errors.vccGenerationDate && <p className="text-red-500">{errors.vccGenerationDate.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="chassisNo">Chassis No</Label>
-              <Input id="chassisNo" {...register('chassisNo')} />
-              {errors.chassisNo && <p className="text-red-500">{errors.chassisNo.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="engineNumber">Engine Number</Label>
-              <Input id="engineNumber" {...register('engineNumber')} />
-              {errors.engineNumber && <p className="text-red-500">{errors.engineNumber.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="yearOfBuilt">Year of Built</Label>
-              <Input id="yearOfBuilt" {...register('yearOfBuilt')} />
-              {errors.yearOfBuilt && <p className="text-red-500">{errors.yearOfBuilt.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="vehicleDrive">Vehicle Drive</Label>
-              <Input id="vehicleDrive" {...register('vehicleDrive')} />
-              {errors.vehicleDrive && <p className="text-red-500">{errors.vehicleDrive.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="countryOfOrigin">Country of Origin</Label>
-              <Input id="countryOfOrigin" {...register('countryOfOrigin')} />
-              {errors.countryOfOrigin && <p className="text-red-500">{errors.countryOfOrigin.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="engineCapacity">Engine Capacity</Label>
-              <Input id="engineCapacity" {...register('engineCapacity')} />
-              {errors.engineCapacity && <p className="text-red-500">{errors.engineCapacity.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="carriageCapacity">Carriage Capacity</Label>
-              <Input id="carriageCapacity" {...register('carriageCapacity')} />
-              {errors.carriageCapacity && <p className="text-red-500">{errors.carriageCapacity.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="passengerCapacity">Passenger Capacity</Label>
-              <Input id="passengerCapacity" {...register('passengerCapacity')} />
-              {errors.passengerCapacity && <p className="text-red-500">{errors.passengerCapacity.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="vehicleModel">Vehicle Model</Label>
-              <Input id="vehicleModel" {...register('vehicleModel')} />
-              {errors.vehicleModel && <p className="text-red-500">{errors.vehicleModel.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="vehicleBrandName">Vehicle Brand Name</Label>
-              <Input id="vehicleBrandName" {...register('vehicleBrandName')} />
-              {errors.vehicleBrandName && <p className="text-red-500">{errors.vehicleBrandName.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="vehicleType">Vehicle Type</Label>
-              <Input id="vehicleType" {...register('vehicleType')} />
-              {errors.vehicleType && <p className="text-red-500">{errors.vehicleType.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="vehicleColor">Vehicle Color</Label>
-              <Input id="vehicleColor" {...register('vehicleColor')} />
-              {errors.vehicleColor && <p className="text-red-500">{errors.vehicleColor.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="specificationStandardName">Specification Standard Name</Label>
-              <Input id="specificationStandardName" {...register('specificationStandardName')} />
-              {errors.specificationStandardName && <p className="text-red-500">{errors.specificationStandardName.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="declarationNumber">Declaration Number</Label>
-              <Input id="declarationNumber" {...register('declarationNumber')} />
-              {errors.declarationNumber && <p className="text-red-500">{errors.declarationNumber.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="declarationDate">Declaration Date</Label>
-              <Input id="declarationDate" type="date" {...register('declarationDate')} />
-              {errors.declarationDate && <p className="text-red-500">{errors.declarationDate.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="ownerCode">Owner Code</Label>
-              <Input id="ownerCode" {...register('ownerCode')} />
-              {errors.ownerCode && <p className="text-red-500">{errors.ownerCode.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="ownerName">Owner Name</Label>
-              <Input id="ownerName" {...register('ownerName')} />
-              {errors.ownerName && <p className="text-red-500">{errors.ownerName.message}</p>}
-            </div>
-          </div>
-          <div>
-            <Label htmlFor="printRemarks">Print Remarks</Label>
-            <Input id="printRemarks" {...register('printRemarks')} />
-            {errors.printRemarks && <p className="text-red-500">{errors.printRemarks.message}</p>}
-          </div>
-          <Button type="submit" disabled={isLoading} className="w-full">
-            {isLoading ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Vehicle' : 'Create Vehicle')}
-          </Button>
-        </form>
+
+            <FormField
+              control={form.control}
+              name="printRemarks"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Print Remarks</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter Print Remarks" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" disabled={isLoading} className="w-full">
+              {isLoading ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Vehicle' : 'Create Vehicle')}
+            </Button>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

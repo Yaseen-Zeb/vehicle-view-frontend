@@ -17,7 +17,7 @@ const formatDateDMY = (dateStr: string) => {
 export const VehicleDetails = ({ vehicle }: VehicleDetailsProps) => {
   const details = [
     { label: 'VCC Number', value: vehicle.vccNo },
-    { label: 'VCC Status', value: vehicle.vccStatus },
+    // { label: 'VCC Status', value: vehicle.vccStatus },
     { label: 'VCC Generation Date', value: formatDateDMY(vehicle.vccGenerationDate) },
     { label: 'Chassis Number', value: vehicle.chassisNo },
     { label: 'Engine Number', value: vehicle.engineNumber },

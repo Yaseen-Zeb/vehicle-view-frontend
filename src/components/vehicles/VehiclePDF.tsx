@@ -8,12 +8,19 @@ import {
   Image,
 } from '@react-pdf/renderer';
 import { Vehicle } from '@/types/vehicle';
+import QRCode from 'qrcode';
 
-// TODO: Replace with actual QR code generation logic
-export const generateQRCodeDataUrl = (vehicleId: number) => {
-  // Placeholder: use a static image or generate a QR code data URL
-  return 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(`${window.location.origin}/public/vehicle/${vehicleId}`);
+export const generateQRCodeDataUrl = async (vehicleId: number): Promise<string> => {
+  const url = `${window.location.origin}/public/vehicle/${vehicleId}`;
+  return await QRCode.toDataURL(url, {
+    margin: 1,
+    color: {
+      dark: '#000000',
+      light: '#0000' // transparent background
+    }
+  });
 };
+
 
 const backgroundImageUrl = '/lovable-uploads/050a130d-e6dd-4406-ae2d-0e528890de70.png';
 
@@ -105,7 +112,7 @@ const VehiclePDF: React.FC<VehiclePDFProps> = ({ vehicle }) => {
 
           {/* Engine HP (if available) */}
           {vehicle.engineCapacity && (
-            <Text style={{ ...styles.text, right: 502, top: 210, width: 215 }}>{vehicle.engineCapacity}</Text>
+            <Text style={{ ...styles.text, textAlign: 'right', right: 452, top: 210, width: 245}}>{vehicle.engineCapacity}</Text>
           )}
 
 
@@ -129,7 +136,7 @@ const VehiclePDF: React.FC<VehiclePDFProps> = ({ vehicle }) => {
 
 
           {/* QR Code */}
-          <Image src={qrCodeUrl} style={{ position: 'absolute', left: 53, bottom: 23, width: 70, height: 70 }} />
+          <Image src={qrCodeUrl} style={{ position: 'absolute', left: 53, bottom: 23, width: 70, height: 70,backgroundColor: 'transparent' }} />
         </View>
       </Page>
     </Document>
