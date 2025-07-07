@@ -147,7 +147,6 @@ export const VehicleTable = () => {
                             {selectedVehicle && (
                               <VehicleForm
                                 vehicle={selectedVehicle}
-                                onSuccess={() => setIsEditDialogOpen(false)}
                               />
                             )}
                           </DialogContent>

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -28,7 +27,7 @@ export const Dashboard = () => {
                 <DialogHeader>
                   <DialogTitle>Add New Vehicle</DialogTitle>
                 </DialogHeader>
-                <VehicleForm onSuccess={() => setIsAddDialogOpen(false)} />
+                <VehicleForm />
               </DialogContent>
             </Dialog>
           </div>

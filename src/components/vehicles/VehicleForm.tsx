@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -15,6 +15,7 @@ import {
   FormLabel,
   FormMessage
 } from '../ui/form';
+import { useToast } from '@/hooks/use-toast';
 
 const vehicleSchema = z.object({
   vccNo: z.string().min(1, 'VCC No is required'),
@@ -57,19 +58,27 @@ const toDateInputValue = (dateStr: string) => {
 
 export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) => {
   const { createVehicle, updateVehicle, isCreating, isUpdating, error } = useVehicles();
+  const { toast } = useToast();
   const isEditing = !!vehicle;
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   // Track previous loading state
   const prevIsLoading = useRef(false);
   const isLoading = isCreating || isUpdating;
 
   useEffect(() => {
-    // If previously loading and now not loading, and no error, call onSuccess
+    // If previously loading and now not loading, and no error, show success message
     if (prevIsLoading.current && !isLoading && !error) {
-      onSuccess?.();
+      setShowSuccessMessage(true);
+      toast({
+        title: "Success!",
+        description: `Vehicle ${isEditing ? 'updated' : 'created'} successfully.`,
+      });
+      // Only call onSuccess if it's provided (for backward compatibility)
+      // onSuccess?.();
     }
     prevIsLoading.current = isLoading;
-  }, [isLoading, error, onSuccess]);
+  }, [isLoading, error, isEditing, toast]);
 
   const form = useForm<VehicleFormData>({
     resolver: zodResolver(vehicleSchema),
@@ -104,12 +113,22 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) 
   });
 
   const onSubmit = (data: VehicleFormData) => {
+    setShowSuccessMessage(false); // Reset success message when submitting
     if (isEditing && vehicle) {
       updateVehicle({ ...data, id: vehicle.id, createdAt: vehicle.createdAt, updatedAt: vehicle.updatedAt } as Vehicle);
     } else {
       createVehicle(data as Omit<Vehicle, 'id' | 'createdAt' | 'updatedAt'>);
     }
     // Do not call onSuccess here; it will be called in useEffect after mutation success
+  };
+
+  const handleReset = () => {
+    form.reset();
+    setShowSuccessMessage(false);
+    toast({
+      title: "Form Reset",
+      description: "Form has been reset to default values.",
+    });
   };
 
   return (
@@ -432,9 +451,28 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) 
               )}
             />
 
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Vehicle' : 'Create Vehicle')}
-            </Button>
+            {showSuccessMessage && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-md">
+                <p className="text-green-800 text-sm">
+                  ✅ Vehicle {isEditing ? 'updated' : 'created'} successfully! You can continue editing or close this dialog manually.
+                </p>
+              </div>
+            )}
+
+            <div className="flex gap-4">
+              <Button type="submit" disabled={isLoading} className="flex-1">
+                {isLoading ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Vehicle' : 'Create Vehicle')}
+              </Button>
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={handleReset}
+                disabled={isLoading}
+                className="flex-1 bg-gray-300"
+              >
+                Reset Form
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>
