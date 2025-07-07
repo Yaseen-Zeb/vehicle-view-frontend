@@ -33,7 +33,7 @@ export const generateQRCodeDataUrl = async (vehicleId: number): Promise<string> 
 };
 
 
-const backgroundImageUrl = '/lovable-uploads/050a130d-e6dd-4406-ae2d-0e528890de70.png';
+const backgroundImageUrl = '/lovable-uploads/aa.png';
 
 const styles = StyleSheet.create({
   page: {
@@ -82,6 +82,20 @@ const formatDateDMY = (dateStr: string) => {
 };
 
 const VehiclePDF: React.FC<VehiclePDFProps> = ({ vehicle }) => {
+  if (!vehicle || !vehicle.id) {
+    return (
+      <Document>
+        <Page size={{ width: 550, height: 750 }} style={styles.page} orientation="landscape">
+          <View style={styles.overlay}>
+            <Text style={{ ...styles.text, left: 200, top: 300 }}>
+              No vehicle data available
+            </Text>
+          </View>
+        </Page>
+      </Document>
+    );
+  }
+
   const qrCodeUrl = generateQRCodeDataUrl(vehicle.id);
   return (
     <Document>
