@@ -39,7 +39,7 @@ export const VehicleTable = () => {
     const generatePreview = async () => {
       if (vehicles.length > 0) {
         try {
-          const blob = await generateVehiclePDFBlob(vehicles[0]);
+          const blob = await generateVehiclePDFBlob(vehicles[1]);
           if (blob) {
             const url = URL.createObjectURL(blob);
             setPdfUrl((prevUrl) => {
@@ -108,7 +108,7 @@ export const VehicleTable = () => {
   return (
     <Card className="py-1">
       {/* PDF Preview */}
-      {/* {pdfUrl ? (
+      {pdfUrl ? (
           <div className="mb-4">
             <div className="text-lg font-semibold mb-2 px-4">PDF Preview - {vehicles[0]?.vccNo}</div>
             <iframe 
@@ -127,7 +127,7 @@ export const VehicleTable = () => {
           <div className="text-center text-muted-foreground py-8">
             No vehicles available to preview.
           </div>
-        )} */}
+        )}
 
       <CardContent className="p-0">
         {vehicles.length === 0 ? (

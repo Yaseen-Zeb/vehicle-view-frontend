@@ -86,7 +86,7 @@ export async function generateVehiclePDFBlob(vehicle: Vehicle): Promise<Blob | n
 
     // Engine HP (if available) (right: 452, top: 210, width: 245)
     if (vehicle.engineCapacity) {
-      doc.text(vehicle.engineCapacity, 750 - 452 - 245, 210 + 10, { align: 'right', maxWidth: 245 });
+      doc.text(vehicle.engineCapacity, 750 - 433 - 245, 210 + 10, { align: 'right', maxWidth: 245 });
     }
 
     // Weight (if available) (right: 502, top: 255, width: 215)
@@ -203,7 +203,7 @@ export async function generateVehiclePDF(vehicle: Vehicle) {
 
   // Engine HP (if available) (right: 452, top: 210, width: 245)
   if (vehicle.engineCapacity) {
-    doc.text(vehicle.engineCapacity, 750 - 452 - 245, 210 + 10, { align: 'right', maxWidth: 245 });
+    doc.text(vehicle.engineCapacity, 750 - 433 - 245, 210 + 10, { align: 'right', maxWidth: 245 });
   }
 
   // Weight (if available) (right: 502, top: 255, width: 215)
