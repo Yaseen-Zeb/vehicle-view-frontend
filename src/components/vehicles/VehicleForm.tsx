@@ -113,15 +113,36 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, action }) => 
     if (action === "edit" && vehicle) {
       updateVehicle({ ...data, id: vehicle.id, createdAt: vehicle.createdAt, updatedAt: vehicle.updatedAt } as Vehicle);
       return
-    } 
-    if (action === "add" || action === "duplicate"){
+    }
+    if (action === "add" || action === "duplicate") {
       createVehicle(data as Omit<Vehicle, 'id' | 'createdAt' | 'updatedAt'>);
     }
     // Do not call onSuccess here; it will be called in useEffect after mutation success
   };
 
   const handleReset = () => {
-    form.reset();
+    form.reset({
+      vccNo: '',
+      vccGenerationDate: '',
+      chassisNo: '',
+      engineNumber: '',
+      yearOfBuilt: '',
+      vehicleDrive: '',
+      countryOfOrigin: '',
+      engineCapacity: '',
+      carriageCapacity: '',
+      passengerCapacity: '',
+      vehicleModel: '',
+      vehicleBrandName: '',
+      vehicleType: '',
+      vehicleColor: '',
+      specificationStandardName: '',
+      declarationNumber: '',
+      declarationDate: '',
+      ownerCode: '',
+      ownerName: '',
+      printRemarks: ''
+    });
     setShowSuccessMessage(false);
     toast({
       title: "Form Reset",
