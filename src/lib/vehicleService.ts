@@ -7,7 +7,15 @@ export const vehicleService = {
   async getAll(): Promise<Vehicle[]> {
     const response = await fetch(`${API_URL}/vehicles`);
     if (!response.ok) {
-      throw new Error('Failed to fetch vehicles');
+      const errorData = await response.json()
+
+      const message = errorData?.error || "Something went wrong";
+
+      const error = new Error(message);
+      // @ts-ignore (Optional: attach more data if needed)
+      error.details = errorData;
+
+      throw error;
     }
     return response.json();
   },
@@ -28,9 +36,19 @@ export const vehicleService = {
       },
       body: JSON.stringify(vehicle),
     });
+
     if (!response.ok) {
-      throw new Error('Failed to create vehicle');
+      const errorData = await response.json()
+
+      const message = errorData?.error || "Something went wrong";
+
+      const error = new Error(message);
+      // @ts-ignore (Optional: attach more data if needed)
+      error.details = errorData;
+
+      throw error;
     }
+
     return response.json();
   },
 
@@ -43,7 +61,15 @@ export const vehicleService = {
       body: JSON.stringify(vehicle),
     });
     if (!response.ok) {
-      throw new Error('Failed to update vehicle');
+      const errorData = await response.json()
+
+      const message = errorData?.error || "Something went wrong";
+
+      const error = new Error(message);
+      // @ts-ignore (Optional: attach more data if needed)
+      error.details = errorData;
+
+      throw error;
     }
     return response.json();
   },
@@ -53,7 +79,15 @@ export const vehicleService = {
       method: 'DELETE',
     });
     if (!response.ok) {
-      throw new Error('Failed to delete vehicle');
+      const errorData = await response.json()
+
+      const message = errorData?.error || "Something went wrong";
+
+      const error = new Error(message);
+      // @ts-ignore (Optional: attach more data if needed)
+      error.details = errorData;
+
+      throw error;
     }
   }
 };

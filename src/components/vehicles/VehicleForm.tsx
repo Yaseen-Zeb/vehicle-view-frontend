@@ -44,6 +44,7 @@ type VehicleFormData = z.infer<typeof vehicleSchema>;
 
 interface VehicleFormProps {
   vehicle?: Vehicle;
+  action: "add" | "edit" | "duplicate"
   onSuccess?: () => void;
 }
 
@@ -56,10 +57,9 @@ const toDateInputValue = (dateStr: string) => {
   return dateStr.slice(0, 10);
 };
 
-export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) => {
+export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, action }) => {
   const { createVehicle, updateVehicle, isCreating, isUpdating, error } = useVehicles();
   const { toast } = useToast();
-  const isEditing = !!vehicle;
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   // Track previous loading state
@@ -70,15 +70,11 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) 
     // If previously loading and now not loading, and no error, show success message
     if (prevIsLoading.current && !isLoading && !error) {
       setShowSuccessMessage(true);
-      toast({
-        title: "Success!",
-        description: `Vehicle ${isEditing ? 'updated' : 'created'} successfully.`,
-      });
       // Only call onSuccess if it's provided (for backward compatibility)
       // onSuccess?.();
     }
     prevIsLoading.current = isLoading;
-  }, [isLoading, error, isEditing, toast]);
+  }, [isLoading, error]);
 
   const form = useForm<VehicleFormData>({
     resolver: zodResolver(vehicleSchema),
@@ -114,9 +110,11 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) 
 
   const onSubmit = (data: VehicleFormData) => {
     setShowSuccessMessage(false); // Reset success message when submitting
-    if (isEditing && vehicle) {
+    if (action === "edit" && vehicle) {
       updateVehicle({ ...data, id: vehicle.id, createdAt: vehicle.createdAt, updatedAt: vehicle.updatedAt } as Vehicle);
-    } else {
+      return
+    } 
+    if (action === "add" || action === "duplicate"){
       createVehicle(data as Omit<Vehicle, 'id' | 'createdAt' | 'updatedAt'>);
     }
     // Do not call onSuccess here; it will be called in useEffect after mutation success
@@ -132,13 +130,16 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) 
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{isEditing ? 'Edit Vehicle' : 'Add New Vehicle'}</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Card className='border-0'>
+      <CardContent className='mt-4'>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Show backend error inline if present */}
+            {error && (
+              <div className="text-destructive text-sm mb-2">
+                {error.message}
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -454,18 +455,18 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle, onSuccess }) 
             {showSuccessMessage && (
               <div className="p-4 bg-green-50 border border-green-200 rounded-md">
                 <p className="text-green-800 text-sm">
-                  ✅ Vehicle {isEditing ? 'updated' : 'created'} successfully! You can continue editing or close this dialog manually.
+                  ✅ Vehicle {action === "edit" ? 'updated' : 'created'} successfully! You can continue editing or close this dialog manually.
                 </p>
               </div>
             )}
 
             <div className="flex gap-4">
               <Button type="submit" disabled={isLoading} className="flex-1">
-                {isLoading ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Vehicle' : 'Create Vehicle')}
+                {isLoading ? action === "edit" ? 'Updating...' : 'Creating...' : action === "edit" ? 'Update' : 'Create'}
               </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={handleReset}
                 disabled={isLoading}
                 className="flex-1 bg-gray-300"

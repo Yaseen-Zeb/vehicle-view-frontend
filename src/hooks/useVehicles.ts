@@ -79,7 +79,7 @@ export const useVehicles = () => {
   };
 };
 
-export const useVehicle = (id: string) => {
+export const useVehicle = (id: number) => {
   return useQuery({
     queryKey: ['vehicle', id],
     queryFn: () => vehicleService.getById(id),

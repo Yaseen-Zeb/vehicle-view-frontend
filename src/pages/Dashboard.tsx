@@ -27,7 +27,7 @@ export const Dashboard = () => {
                 <DialogHeader>
                   <DialogTitle>Add New Vehicle</DialogTitle>
                 </DialogHeader>
-                <VehicleForm />
+                <VehicleForm action='add'/>
               </DialogContent>
             </Dialog>
           </div>

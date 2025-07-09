@@ -40,11 +40,8 @@ export const VehicleDetails = ({ vehicle }: VehicleDetailsProps) => {
   ];
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Vehicle Certificate Details</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Card className='border-0'>
+      <CardContent className='mt-4'>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {details.map((detail, index) => (
             <div key={index} className="border-b pb-2">

@@ -43,41 +43,47 @@ export const PublicVehicleView = () => {
         <div className="bg-white border-x border-t border-gray-300 px-4 py-2 text-[16px] font-semibold text-red-700 border-b-0">VCC/Vehicle Details</div>
         {/* Details Card */}
         <div className="bg-white border border-gray-300 rounded-b-md p-1">
-          <div className="bg-gray-200 grid grid-cols-1 md:grid-cols-2 gap-x-8  py-3 px-4">
-            {/* Left Column */}
-            <div className="space-y-3">
+          <div className="bg-gray-200 py-3 px-4">
+            {/* Responsive paired two-column layout on md+, single column on mobile */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+              {/* Row 1 */}
               <Detail label="VCC No" value={vehicle.vccNo} />
-              <Detail label="VCC Generation Date" value={formatDateDMY(vehicle.vccGenerationDate)} />
-              <Detail label="Engine Number" value={vehicle.engineNumber || ''} />
-              <Detail label="Vehicle Drive" value={vehicle.vehicleDrive} />
-              <Detail label="Engine Capacity" value={vehicle.engineCapacity || ''} />
-              <Detail label="Passenger Capacity" value={vehicle.passengerCapacity || ''} />
-              <Detail label="Vehicle Brand Name" value={vehicle.vehicleBrandName} />
-              <Detail label="Vehicle Color" value={vehicle.vehicleColor} />
-              <Detail label="Declaration Number" value={vehicle.declarationNumber} />
-              <Detail label="Owner Code" value={vehicle.ownerCode} />
-              <div className="flex items-start text-[14px]">
-                <span className="font-semibold min-w-[140px]">Print Remarks :</span>
-                <span className="ml-2 whitespace-pre-line">
-                  {vehicle.printRemarks}
-                </span>
-              </div>
-            </div>
-            {/* Right Column */}
-            <div className="space-y-2">
-              <div className="flex text-[14px] ">
-                <span className="min-w-[140px]">VCC Status :</span>
+              <div className="flex text-[14px]">
+                <span className="min-w-[140px]">Status :</span>
                 <span className="ml-2 font-bold text-red-600">Printed/Downloaded</span>
               </div>
+              {/* Row 2 */}
+              <Detail label="VCC Generation Date" value={formatDateDMY(vehicle.vccGenerationDate)} />
               <Detail label="Chassis No" value={vehicle.chassisNo} />
+              {/* Row 3 */}
+              <Detail label="Engine Number" value={vehicle.engineNumber || ''} />
               <Detail label="Year of Built" value={vehicle.yearOfBuilt} />
+              {/* Row 4 */}
+              <Detail label="Vehicle Drive" value={vehicle.vehicleDrive} />
               <Detail label="Country of Origin" value={vehicle.countryOfOrigin} />
+              {/* Row 5 */}
+              <Detail label="Engine Capacity" value={vehicle.engineCapacity || ''} />
               <Detail label="Carriage Capacity" value={vehicle.carriageCapacity || ''} />
+              {/* Row 6 */}
               <Detail label="Vehicle Model" value={vehicle.vehicleModel} />
+              <Detail label="Vehicle Brand Name" value={vehicle.vehicleBrandName} />
+              {/* Row 7 */}
               <Detail label="Vehicle Type" value={vehicle.vehicleType} />
+              <Detail label="Color" value={vehicle.vehicleColor} />
+              {/* Row 8 */}
               <Detail label="Specification Standard Name" value={vehicle.specificationStandardName} />
+              <Detail label="Declaration Number" value={vehicle.declarationNumber} />
+              {/* Row 9 */}
               <Detail label="Declaration Date" value={formatDateDMY(vehicle.declarationDate)} />
+              <Detail label="Owner Code" value={vehicle.ownerCode} />
+              {/* Row 10 */}
               <Detail label="Owner Name" value={vehicle.ownerName} />
+              <div></div>
+              {/* Print Remarks: always last, full width */}
+              <div className="md:col-span-2 flex items-start text-[14px] mt-2">
+                <span className="font-semibold min-w-[140px]">Print Remarks :</span>
+                <span className="ml-2 whitespace-pre-line">{vehicle.printRemarks}</span>
+              </div>
             </div>
           </div>
         </div>
