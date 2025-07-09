@@ -139,30 +139,40 @@ export const VehicleTable = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="whitespace-nowrap">VCC No</TableHead>
-                  <TableHead className="whitespace-nowrap">Brand</TableHead>
-                  <TableHead className="whitespace-nowrap">Model</TableHead>
-                  <TableHead className="whitespace-nowrap">Year</TableHead>
-                  <TableHead className="whitespace-nowrap">Color</TableHead>
-                  <TableHead className="whitespace-nowrap">Owner</TableHead>
+                  <TableHead className="whitespace-nowrap max-w-[120px] truncate">VCC No</TableHead>
+                  <TableHead className="whitespace-nowrap max-w-[150px] truncate">Brand</TableHead>
+                  <TableHead className="whitespace-nowrap max-w-[200px] truncate">Model</TableHead>
+                  <TableHead className="whitespace-nowrap max-w-[120px] truncate">Year</TableHead>
+                  <TableHead className="whitespace-nowrap max-w-[120px] truncate">Color</TableHead>
+                  <TableHead className="whitespace-nowrap max-w-[200px] truncate">Owner</TableHead>
                   <TableHead className="whitespace-nowrap">Actions</TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
                 {vehicles.map((vehicle) => (
                   <TableRow key={vehicle.id}>
-                    <TableCell className="font-medium">
+                    <TableCell className="font-medium max-w-[120px] truncate">
                       {vehicle.vccNo}
                     </TableCell>
-                    <TableCell>{vehicle.vehicleBrandName}</TableCell>
-                    <TableCell>{vehicle.vehicleModel}</TableCell>
-                    <TableCell>{vehicle.yearOfBuilt}</TableCell>
-                    <TableCell>{vehicle.vehicleColor}</TableCell>
-                    <TableCell className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[400px]">
+                    <TableCell className="max-w-[150px] truncate">
+                      {vehicle.vehicleBrandName}
+                    </TableCell>
+                    <TableCell className="max-w-[200px] truncate">
+                      {vehicle.vehicleModel}
+                    </TableCell>
+                    <TableCell className="max-w-[120px] truncate">
+                      {vehicle.yearOfBuilt}
+                    </TableCell>
+                    <TableCell className="max-w-[120px] truncate">
+                      {vehicle.vehicleColor}
+                    </TableCell>
+                    <TableCell className="max-w-[200px] truncate">
                       {vehicle.ownerName}
                     </TableCell>
+
                     <TableCell>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <Dialog
                           open={isViewDialogOpen}
                           onOpenChange={setIsViewDialogOpen}
@@ -185,17 +195,17 @@ export const VehicleTable = () => {
                             )}
                           </DialogContent>
                         </Dialog>
+
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            setSelectedVehicle(vehicle)
-                            setIsEditDialogOpen(true)
+                            setSelectedVehicle(vehicle);
+                            setIsEditDialogOpen(true);
                           }}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
-
 
                         <Button
                           variant="outline"
@@ -217,7 +227,6 @@ export const VehicleTable = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            // Prepare duplicate data: omit id, createdAt, updatedAt, and clear vccNo
                             const { id, createdAt, updatedAt, ...rest } = vehicle;
                             setDuplicateVehicle(rest as Vehicle);
                             setIsDuplicateDialogOpen(true);
@@ -239,6 +248,7 @@ export const VehicleTable = () => {
                 ))}
               </TableBody>
             </Table>
+
           </div>
         )}
       </CardContent>
