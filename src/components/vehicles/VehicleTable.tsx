@@ -107,8 +107,7 @@ export const VehicleTable = () => {
 
   return (
     <Card className="py-1">
-      {/* PDF Preview */}
-     {pdfUrl ? (
+      {/* {pdfUrl ? (
           <div className="mb-4">
             <div className="text-lg font-semibold mb-2 px-4">PDF Preview - {vehicles[0]?.vccNo}</div>
             <iframe 
@@ -127,7 +126,8 @@ export const VehicleTable = () => {
           <div className="text-center text-muted-foreground py-8">
             No vehicles available to preview.
           </div>
-        )} 
+        )}  */}
+     
 
       <CardContent className="p-0">
         {vehicles.length === 0 ? (
