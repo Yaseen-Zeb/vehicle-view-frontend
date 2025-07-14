@@ -95,12 +95,12 @@ export async function generateVehiclePDFBlob(vehicle: Vehicle): Promise<Blob | n
     }
 
     // Importer or Owner (right: 502, top: 296, width: 215)
-    doc.text(vehicle.ownerName + " " + vehicle.ownerCode, 750 - 502 - 215, 296 + 10, { maxWidth: 215 });
+    doc.text(vehicle.ownerCode + "\n" + vehicle.ownerName, 750 - 502 - 215, 289.5 + 10, { maxWidth: 215 });
 
     // Declaration No. (right: 502, top: 340, width: 215)
     doc.text(
       `${vehicle.declarationNumber} - ${formatDateDMY(vehicle.declarationDate)}`,
-      750 - 502 - 215, 340 + 10, { maxWidth: 215 }
+      750 - 502 - 215, 340 + 12.5, { maxWidth: 215 }
     );
 
     // Comments (right: 62, top: 448, width: 295) - Handle mixed Arabic/English text
@@ -109,20 +109,20 @@ export async function generateVehiclePDFBlob(vehicle: Vehicle): Promise<Blob | n
       const arabicChars = (vehicle.printRemarks.match(/[\u0600-\u06FF\u0750-\u077F]/g) || []).length;
       const totalChars = vehicle.printRemarks.replace(/\s/g, '').length; // Exclude spaces
       const arabicRatio = totalChars > 0 ? arabicChars / totalChars : 0;
-      
+
       if (arabicRatio > 0.5) {
         // Mostly Arabic text - use RTL alignment
         // TODO: Load Arabic font like Amiri or Cairo for better rendering
         // doc.addFont('path/to/arabic-font.ttf', 'ArabicFont', 'normal');
         // doc.setFont('ArabicFont');
-        
-        doc.text(vehicle.printRemarks, 750 - 62 - 5, 448 + 10, { 
+
+        doc.text(vehicle.printRemarks, 750 - 62 - 5, 448 + 10, {
           maxWidth: 294,
           align: 'right' // RTL alignment for mostly Arabic
         });
       } else {
         // Mixed or mostly English text - use LTR alignment
-        doc.text(vehicle.printRemarks, 750 - 62 - 295, 448 + 10, { 
+        doc.text(vehicle.printRemarks, 750 - 62 - 295, 448 + 10, {
           maxWidth: 294,
           align: 'left' // LTR alignment for mixed/English text
         });
@@ -212,12 +212,12 @@ export async function generateVehiclePDF(vehicle: Vehicle) {
   }
 
   // Importer or Owner (right: 502, top: 296, width: 215)
-  doc.text(vehicle.ownerName + " " + vehicle.ownerCode, 750 - 502 - 215, 296 + 10, { maxWidth: 215 });
+  doc.text(vehicle.ownerCode + "\n" + vehicle.ownerName, 750 - 502 - 215, 289.5 + 10, { maxWidth: 215 });
 
   // Declaration No. (right: 502, top: 340, width: 215)
   doc.text(
     `${vehicle.declarationNumber} - ${formatDateDMY(vehicle.declarationDate)}`,
-    750 - 502 - 215, 340 + 10, { maxWidth: 215 }
+    750 - 502 - 215, 340 + 12.5, { maxWidth: 215 }
   );
 
   // Comments (right: 62, top: 448, width: 295) - Handle mixed Arabic/English text
@@ -226,20 +226,20 @@ export async function generateVehiclePDF(vehicle: Vehicle) {
     const arabicChars = (vehicle.printRemarks.match(/[\u0600-\u06FF\u0750-\u077F]/g) || []).length;
     const totalChars = vehicle.printRemarks.replace(/\s/g, '').length; // Exclude spaces
     const arabicRatio = totalChars > 0 ? arabicChars / totalChars : 0;
-    
+
     if (arabicRatio > 0.5) {
       // Mostly Arabic text - use RTL alignment
       // TODO: Load Arabic font like Amiri or Cairo for better rendering
       // doc.addFont('path/to/arabic-font.ttf', 'ArabicFont', 'normal');
       // doc.setFont('ArabicFont');
-      
-      doc.text(vehicle.printRemarks, 750 - 62 - 5, 448 + 10, { 
+
+      doc.text(vehicle.printRemarks, 750 - 62 - 5, 448 + 10, {
         maxWidth: 300,
         align: 'right' // RTL alignment for mostly Arabic
       });
     } else {
       // Mixed or mostly English text - use LTR alignment
-      doc.text(vehicle.printRemarks, 750 - 62 - 295, 448 + 10, { 
+      doc.text(vehicle.printRemarks, 750 - 62 - 295, 448 + 10, {
         maxWidth: 300,
         align: 'left' // LTR alignment for mixed/English text
       });
