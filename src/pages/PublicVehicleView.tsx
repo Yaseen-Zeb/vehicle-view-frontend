@@ -38,7 +38,7 @@ export const PublicVehicleView = () => {
     <div className="min-h-screen bg-gray-100 py-4 px-2">
       <div className="max-w-5xl mx-auto">
         {/* Header Bar */}
-        <div className="bg-[#626262] text-white px-4  text-lg font-semibold border border-b-0 border-gray-300 text-[25px]">View VCC Details</div>
+        <div className="bg-[#626262] text-white px-4 py-[29px] text-lg font-semibold border border-b-0 border-gray-300 !text-[25px]">View VCC Details</div>
         {/* Section Bar */}
         <div className="bg-white border-x border-t border-gray-300 px-4 py-2 font-bold text-red-700 border-b-0 text-[25px]">VCC/Vehicle Details</div>
         {/* Details Card */}
