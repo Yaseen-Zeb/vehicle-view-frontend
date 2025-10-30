@@ -107,7 +107,7 @@ export const VehicleTable = () => {
 
   return (
     <Card className="py-1">
-      {/* {pdfUrl ? (
+       {/* {pdfUrl ? (
           <div className="mb-4">
             <div className="text-lg font-semibold mb-2 px-4">PDF Preview - {vehicles[0]?.vccNo}</div>
             <iframe 

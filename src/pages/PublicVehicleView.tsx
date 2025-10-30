@@ -35,8 +35,7 @@ export const PublicVehicleView = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto min-h-screen  md:mt-7   m-1 font-[Poppins, sans-serif]
-">
+    <div className="max-w-6xl mx-auto min-h-screen  md:mt-7   m-1 font-[Poppins, sans-serif]">
       <div className="  border-2 border-gray-300 p-1">
         <div className="bg-gray-100">
         {/* Header Bar */}
@@ -50,7 +49,7 @@ export const PublicVehicleView = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3.5">
               {/* Row 1 */}
               <Detail label="VCC No" value={vehicle.vccNo} />
-              <div className="flex text-[13px]">
+              <div className="flex text-[13px] md:space-x-32 space-x-20">
                 <span className="min-w-[140px] font-medium">Status :</span>
                 <span className="ml-2 font-semibold text-[#ff1e1e]">Printed/Downloaded</span>
               </div>
@@ -95,7 +94,7 @@ export const PublicVehicleView = () => {
 
 function Detail({ label, value }: { label: string; value: string | number | undefined }) {
   return (
-    <div className="flex text-[13px]">
+    <div className="flex text-[13px] md:space-x-32 space-x-20 ">
       <span className="min-w-[140px] font-medium">{label} :</span>
       <span className="ml-2 font-semibold">{value || ''}</span>
     </div>

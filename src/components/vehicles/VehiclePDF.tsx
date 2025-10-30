@@ -54,7 +54,7 @@ export async function generateVehiclePDFBlob(vehicle: Vehicle): Promise<Blob | n
 
     // 3. Set font
     doc.setFont('helvetica');
-    doc.setFontSize(12);
+    doc.setFontSize(13);
     doc.setTextColor(0, 0, 0);
 
     // 4. Draw each field at the desired position (adjust x, y as needed)
@@ -66,41 +66,41 @@ export async function generateVehiclePDFBlob(vehicle: Vehicle): Promise<Blob | n
     // Vehicle Type (right: 147, top: 137, width: 194)
     doc.text(
       `${vehicle.vehicleBrandName} - ${vehicle.vehicleModel} (${vehicle.vehicleType})`,
-      750 - 147 - 194, 137 + 10, { maxWidth: 194 }
+      735 - 147 - 194, 137 + 10, { maxWidth: 194 }
     );
 
     // Brand and Model (right: 100, top: 212, width: 240)
-    doc.text(`${vehicle.yearOfBuilt} - ${spellDigits(vehicle.yearOfBuilt)}`, 750 - 100 - 240, 212 + 10, { maxWidth: 240 });
+    doc.text(`${vehicle.yearOfBuilt} - ${spellDigits(vehicle.yearOfBuilt)}`, 735 - 100 - 240, 212 + 10, { maxWidth: 240 });
 
     // Origin (right: 100, top: 251, width: 240)
-    doc.text(vehicle.countryOfOrigin, 750 - 100 - 240, 251 + 10, { maxWidth: 240 });
+    doc.text(vehicle.countryOfOrigin, 735 - 100 - 240, 251 + 10, { maxWidth: 240 });
 
     // Chassis No. (right: 100, top: 299, width: 240)
-    doc.text(vehicle.chassisNo, 750 - 100 - 240, 299 + 10, { maxWidth: 240 });
+    doc.text(vehicle.chassisNo, 735 - 100 - 240, 299 + 10, { maxWidth: 240 });
 
     // Color (right: 100, top: 338, width: 240)
-    doc.text(vehicle.vehicleColor, 750 - 100 - 240, 338 + 10, { maxWidth: 240 });
+    doc.text(vehicle.vehicleColor, 735 - 100 - 240, 338 + 10, { maxWidth: 240 });
 
     // Engine No. (right: 100, top: 379, width: 240)
-    doc.text(vehicle.engineNumber, 750 - 100 - 240, 379 + 10, { maxWidth: 240 });
+    doc.text(vehicle.engineNumber, 735 - 100 - 240, 379 + 10, { maxWidth: 240 });
 
     // Engine HP (if available) (right: 452, top: 210, width: 245)
     if (vehicle.engineCapacity) {
-      doc.text(vehicle.engineCapacity, 750 - 433 - 245, 210 + 10, { align: 'right', maxWidth: 245 });
+      doc.text(vehicle.engineCapacity, 735 - 433 - 245, 210 + 10, { align: 'right', maxWidth: 245 });
     }
 
     // Weight (if available) (right: 502, top: 255, width: 215)
     if (vehicle.carriageCapacity) {
-      doc.text(vehicle.carriageCapacity, 750 - 502 - 215, 255 + 10, { maxWidth: 215 });
+      doc.text(vehicle.carriageCapacity, 735 - 502 - 215, 255 + 10, { maxWidth: 215 });
     }
 
     // Importer or Owner (right: 502, top: 296, width: 215)
-    doc.text(vehicle.ownerCode + "\n" + vehicle.ownerName, 750 - 502 - 215, 289.5 + 10, { maxWidth: 215 });
+    doc.text(vehicle.ownerCode + "\n" + vehicle.ownerName, 742 - 502 - 215, 289.5 + 10, { maxWidth: 215 });
 
     // Declaration No. (right: 502, top: 340, width: 215)
     doc.text(
       `${vehicle.declarationNumber} - ${formatDateDMY(vehicle.declarationDate)}`,
-      750 - 502 - 215, 340 + 12.5, { maxWidth: 215 }
+      742 - 502 - 215, 340 + 12.5, { maxWidth: 215 }
     );
 
     // Comments (right: 62, top: 448, width: 295) - Handle mixed Arabic/English text
