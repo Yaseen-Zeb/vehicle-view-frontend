@@ -72,7 +72,10 @@ export const PublicVehicleView = () => {
               <Detail label="Vehicle Type" value={vehicle.vehicleType} />
               <Detail label="Color" value={vehicle.vehicleColor} />
               {/* Row 8 */}
-              <Detail label="Specification Standard Name" value={vehicle.specificationStandardName} />
+               <div className="flex text-[13px] md:space-x-[90px] space-x-[45px] ">
+      <span className="min-w-[140px] font-medium">Specification Standard Name :</span>
+      <span className="ml-2 font-semibold">{vehicle.specificationStandardName || ''}</span>
+    </div>
               <Detail label="Declaration Number" value={vehicle.declarationNumber} />
               {/* Row 9 */}
               <Detail label="Declaration Date" value={formatDateDMY(vehicle.declarationDate)} />
