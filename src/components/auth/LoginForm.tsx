@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
 import { LoginCredentials } from '@/types/auth';
+import { Eye, EyeClosed } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address').min(1, 'Email is required'),
@@ -15,6 +17,7 @@ const loginSchema = z.object({
 
 export const LoginForm = () => {
   const { login, loginLoading } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -60,7 +63,21 @@ export const LoginForm = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Enter your password" {...field} />
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="Enter your password"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute inset-y-0 right-2 my-auto text-sm text-gray-600 hover:text-gray-900"
+                          aria-label={showPassword ? 'Hide password' : 'Show password'}
+                        >
+                          {showPassword ? <Eye size={20}/>  : <EyeClosed size={20}/>}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
